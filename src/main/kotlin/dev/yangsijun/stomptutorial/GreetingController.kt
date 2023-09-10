@@ -9,8 +9,8 @@ import org.springframework.web.util.HtmlUtils
 @RestController
 class GreetingController {
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/something-id")
+    @SendTo("/sub/something-id")
     @Throws(Exception::class)
     fun greeting(message: HelloMessage): Greeting {
         Thread.sleep(1000) // simulated delay
