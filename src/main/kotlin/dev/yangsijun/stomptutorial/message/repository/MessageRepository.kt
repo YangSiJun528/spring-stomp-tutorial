@@ -1,4 +1,4 @@
-package dev.yangsijun.stomptutorial.room.repository
+package dev.yangsijun.stomptutorial.message.repository
 
 import dev.yangsijun.stomptutorial.message.domain.ChatMessage
 import org.bson.types.ObjectId
