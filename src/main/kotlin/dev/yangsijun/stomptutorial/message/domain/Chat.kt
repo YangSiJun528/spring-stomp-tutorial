@@ -10,20 +10,21 @@ import java.util.UUID
 // 방 id(=), 채팅 id(=,<>)
 // - 대부분 최근 채팅을 보기 때문에 최신순 정렬, 사실 방은 (=) 조건이라 냅둠
 @CompoundIndex(def = "{'roomId': 1, 'id': -1}")
-class Message private constructor(
+class Chat private constructor(
     @Id
     val id: ObjectId,
     val roomId: UUID,
+    val type: ChatType,
     val textContent: String
 ) {
     companion object {
         // DB 저장하기 직전에 사용 - ObjectId에 시간 값이 저장되기 때문
-        fun create(roomId: UUID, textContent: String): Message {
-            return Message(id = ObjectId.get(), roomId = roomId, textContent = textContent)
+        fun create(roomId: UUID, type: ChatType, textContent: String): Chat {
+            return Chat(id = ObjectId.get(), roomId = roomId, type = type, textContent = textContent)
         }
 
-        fun update(id: ObjectId, roomId: UUID, textContent: String): Message {
-            return Message(id = id, roomId = roomId, textContent = textContent)
+        fun update(id: ObjectId, roomId: UUID, type: ChatType, textContent: String): Chat {
+            return Chat(id = id, roomId = roomId, type = type, textContent = textContent)
         }
     }
 }
