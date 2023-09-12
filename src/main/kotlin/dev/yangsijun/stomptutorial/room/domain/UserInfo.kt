@@ -1,6 +1,6 @@
-package dev.yangsijun.stomptutorial.room
+package dev.yangsijun.stomptutorial.room.domain
 
-import dev.yangsijun.stomptutorial.message.ChatMessage
+import dev.yangsijun.stomptutorial.message.domain.ChatMessage
 import java.util.UUID
 
 data class UserInfo(

@@ -1,4 +1,4 @@
-package dev.yangsijun.stomptutorial.room
+package dev.yangsijun.stomptutorial.room.domain
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
