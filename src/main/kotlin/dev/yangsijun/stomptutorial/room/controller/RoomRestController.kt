@@ -9,13 +9,9 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/room/v1")
-class RoomController {
+@RequestMapping("/api/room/v1")
+class RoomRestController {
 
-    @MessageMapping("/{roomId}")
-    @SendTo("/sub/room/v1/{roomId}")
-    fun greeting(@DestinationVariable roomId:UUID, message: ChatMessage): ChatMessage {
-        // TODO Save Chat
-        return message
-    }
+
+
 }
