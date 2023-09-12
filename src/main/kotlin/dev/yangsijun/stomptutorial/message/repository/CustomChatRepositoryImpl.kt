@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-class CustomMessageRepositoryImpl(
+class CustomChatRepositoryImpl(
     private val mongoTemplate: MongoTemplate
-) : CustomMessageRepository {
+) : CustomChatRepository {
 }
