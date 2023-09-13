@@ -12,15 +12,16 @@ import java.util.*
 class Room(
     @Id
     val id: UUID,
+    val name: String,
     val userInfos: List<UserInfo>
 ) {
     companion object {
-        fun create(userInfos: List<UserInfo>): Room {
-            return Room(id = UUID.randomUUID(), userInfos = userInfos)
+        fun create(name: String, userInfos: List<UserInfo>): Room {
+            return Room(id = UUID.randomUUID(), name = name, userInfos = userInfos)
         }
 
-        fun update(id: UUID, userInfos: List<UserInfo>): Room {
-            return Room(id = UUID.randomUUID(), userInfos = userInfos)
+        fun update(id: UUID, name: String, userInfos: List<UserInfo>): Room {
+            return Room(id = UUID.randomUUID(), name = name, userInfos = userInfos)
         }
     }
 }
