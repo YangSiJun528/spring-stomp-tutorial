@@ -1,4 +1,4 @@
-package dev.yangsijun.stomptutorial.message.domain
+package dev.yangsijun.stomptutorial.chat.domain
 
 enum class ChatType {
     CHAT, // 단순 채팅

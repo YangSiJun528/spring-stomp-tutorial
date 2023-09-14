@@ -1,6 +1,6 @@
-package dev.yangsijun.stomptutorial.message.repository
+package dev.yangsijun.stomptutorial.chat.repository
 
-import dev.yangsijun.stomptutorial.message.domain.Chat
+import dev.yangsijun.stomptutorial.chat.domain.Chat
 import org.bson.types.ObjectId
 import org.springframework.data.repository.CrudRepository
 

@@ -1,6 +1,6 @@
 package dev.yangsijun.stomptutorial.room.repository
 
-import dev.yangsijun.stomptutorial.message.repository.CustomChatRepository
+import dev.yangsijun.stomptutorial.chat.repository.CustomChatRepository
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.stereotype.Repository
 

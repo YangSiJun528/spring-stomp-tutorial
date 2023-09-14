@@ -1,4 +1,4 @@
-package dev.yangsijun.stomptutorial.message.domain
+package dev.yangsijun.stomptutorial.chat.domain
 
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
