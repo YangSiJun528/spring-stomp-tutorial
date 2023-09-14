@@ -1,3 +1,5 @@
 package dev.yangsijun.stomptutorial.room.dto.common
 
-data class RoomInfo()
+data class RoomInfo(
+    val
+)
