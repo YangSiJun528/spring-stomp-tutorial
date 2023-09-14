@@ -7,7 +7,6 @@ import java.util.*
 data class ChatMessage(
     val chatId: ObjectId,
     val roomId: UUID,
-    val userId: UUID,
     val type: ChatType,
     val textContent: String
 )
