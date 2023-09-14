@@ -14,17 +14,18 @@ class Chat private constructor(
     @Id
     val id: ObjectId,
     val roomId: UUID,
+    val userId: UUID,
     val type: ChatType,
     val textContent: String
 ) {
     companion object {
         // DB 저장하기 직전에 사용 - ObjectId에 시간 값이 저장되기 때문
-        fun create(roomId: UUID, type: ChatType, textContent: String): Chat {
-            return Chat(id = ObjectId.get(), roomId = roomId, type = type, textContent = textContent)
+        fun create(roomId: UUID, userId: UUID, type: ChatType, textContent: String): Chat {
+            return Chat(id = ObjectId.get(), roomId = roomId, userId = userId, type = type, textContent = textContent)
         }
 
-        fun update(id: ObjectId, roomId: UUID, type: ChatType, textContent: String): Chat {
-            return Chat(id = id, roomId = roomId, type = type, textContent = textContent)
+        fun update(id: ObjectId, userId: UUID, roomId: UUID, type: ChatType, textContent: String): Chat {
+            return Chat(id = id, roomId = roomId, userId = userId, type = type, textContent = textContent)
         }
     }
 }
