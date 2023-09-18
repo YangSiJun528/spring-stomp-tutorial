@@ -5,5 +5,5 @@ import dev.yangsijun.stomptutorial.room.domain.Room
 import org.springframework.data.repository.CrudRepository
 import java.util.UUID
 
-interface RoomRepository : CrudRepository<Room, UUID>, CustomChatRepository {
+interface RoomRepository : CrudRepository<Room, UUID>, CustomRoomRepository {
 }
