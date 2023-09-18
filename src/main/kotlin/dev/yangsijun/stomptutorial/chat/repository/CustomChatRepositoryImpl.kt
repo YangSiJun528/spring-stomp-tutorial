@@ -16,8 +16,8 @@ class CustomChatRepositoryImpl(
     private val mongoTemplate: MongoTemplate
 ) : CustomChatRepository {
 
-    override fun findChatsClosestToId(chatId: ObjectId, roomId: UUID, direction: Int, limit: Int): List<BaseChat> {
-        val query = Query().with(Pageable.ofSize(limit)).with(Sort.by(Sort.Direction.ASC))
+    override fun findChatsClosestToId(chatId: ObjectId, roomId: UUID, direction: Sort.Direction, limit: Int): List<BaseChat> {
+        val query = Query().with(Pageable.ofSize(limit)).with(Sort.by(direction, "id"))
 
         // roomId가 같은 경우만 추가
         val criteria = Criteria.where("id")
@@ -25,9 +25,9 @@ class CustomChatRepositoryImpl(
                 it.andOperator(
                     Criteria.where("roomId").`is`(roomId),
                     when (direction) {
-                        1 -> it.gte(chatId)
-                        -1 -> it.lte(chatId)
-                        else -> throw IllegalArgumentException("direction is 1 or -1, input data : $direction")
+                        Sort.Direction.ASC -> it.gte(chatId)
+                        Sort.Direction.DESC -> it.lte(chatId)
+                        else -> throw IllegalArgumentException("direction is ASC or DESC, input data : $direction")
                     }
                 )
             }

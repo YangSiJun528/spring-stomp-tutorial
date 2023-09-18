@@ -5,6 +5,7 @@ import dev.yangsijun.stomptutorial.chat.message.res.ChatMessage
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
+import org.springframework.data.domain.Sort
 import java.lang.RuntimeException
 import java.util.*
 
@@ -49,7 +50,7 @@ class FindChatsService(
             throw RuntimeException("Can't find Chat by input ID : $chatId")
     }
 
-    private fun booleanToDirection(b: Boolean): Int = if (b) 1 else -1
+    private fun booleanToDirection(b: Boolean): Sort.Direction = if (b) Sort.Direction.ASC else Sort.Direction.DESC
 
     private fun chatToChatMessage(chat: BaseChat): ChatMessage {
         return ChatMessage(
