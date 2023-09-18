@@ -3,6 +3,8 @@ package dev.yangsijun.stomptutorial.chat.service
 import dev.yangsijun.stomptutorial.chat.domain.UserChat
 import dev.yangsijun.stomptutorial.chat.message.req.InChatMessage
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
+import dev.yangsijun.stomptutorial.common.event.SavedNewChatEvent
+import dev.yangsijun.stomptutorial.room.domain.Room
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
 import org.springframework.context.ApplicationEventPublisher
@@ -21,7 +23,8 @@ class ReceiveChatService(
 ) {
     @Transactional(rollbackFor = [Exception::class])
     fun execute(userId: UUID, message: InChatMessage) {
-        validateRoomExists(message.roomId)
+        val room: Room = roomRepository.findById(message.roomId)
+            .orElseThrow { RuntimeException("Can't find Room by input ID : $message.roomId") }
         val newChat = UserChat(
             id = ObjectId.get(),
             userId = userId,
@@ -31,11 +34,6 @@ class ReceiveChatService(
 
         chatRepository.save(newChat)
 
-        //TODO send EVENT
-    }
-
-    private fun validateRoomExists(roomId: UUID) {
-        if (!roomRepository.existsById(roomId))
-            throw RuntimeException("Can't find Room by input ID : $roomId")
+        eventPublisher.publishEvent(SavedNewChatEvent(room, newChat))
     }
 }

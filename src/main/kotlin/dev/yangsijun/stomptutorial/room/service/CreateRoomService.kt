@@ -3,11 +3,13 @@ package dev.yangsijun.stomptutorial.room.service
 import dev.yangsijun.stomptutorial.chat.domain.BaseChat
 import dev.yangsijun.stomptutorial.chat.domain.SystemChat
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
+import dev.yangsijun.stomptutorial.common.event.SavedNewChatEvent
 import dev.yangsijun.stomptutorial.room.domain.Room
 import dev.yangsijun.stomptutorial.room.domain.UserInfo
 import dev.yangsijun.stomptutorial.room.dto.req.CreateRoomReq
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -19,7 +21,8 @@ import java.util.*
 @Service
 class CreateRoomService(
     private val chatRepository: ChatRepository,
-    private val roomRepository: RoomRepository
+    private val roomRepository: RoomRepository,
+    private val eventPublisher: ApplicationEventPublisher
 ) {
 
     @Transactional(rollbackFor = [Exception::class])
@@ -36,7 +39,7 @@ class CreateRoomService(
         roomRepository.save(newRoom)
         chatRepository.save(systemChat)
 
-        // TODO Send Refresh Event
+        eventPublisher.publishEvent(SavedNewChatEvent(newRoom, systemChat))
     }
 
     fun toUserInfos(dto: CreateRoomReq, systemChatId: ObjectId): List<UserInfo> {
