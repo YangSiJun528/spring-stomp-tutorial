@@ -1,6 +1,6 @@
 package dev.yangsijun.stomptutorial.chat.service
 
-import dev.yangsijun.stomptutorial.chat.domain.Chat
+import dev.yangsijun.stomptutorial.chat.domain.BaseChat
 import dev.yangsijun.stomptutorial.chat.message.res.ChatMessage
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
@@ -18,7 +18,7 @@ class FindChatsService(
         validateRoomExists(roomId)
         validateChatExists(chatId)
 
-        val chats: List<Chat> = chatRepository.findChatsClosestToId(
+        val chats: List<BaseChat> = chatRepository.findChatsClosestToId(
             chatId = chatId,
             roomId = roomId,
             direction = booleanToDirection(searchPrevious),
@@ -31,7 +31,7 @@ class FindChatsService(
     fun execute(roomId: UUID, size: Int): List<ChatMessage> {
         validateRoomExists(roomId)
 
-        val chats: List<Chat> = chatRepository.findChatsRecent(
+        val chats: List<BaseChat> = chatRepository.findChatsRecent(
             roomId = roomId,
             limit = size
         )
@@ -51,7 +51,7 @@ class FindChatsService(
 
     private fun booleanToDirection(b: Boolean): Int = if (b) 1 else -1
 
-    private fun chatToChatMessage(chat: Chat): ChatMessage {
+    private fun chatToChatMessage(chat: BaseChat): ChatMessage {
         return ChatMessage(
             chatId = chat.id,
             roomId = chat.roomId,

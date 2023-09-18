@@ -16,12 +16,12 @@ class Room(
     val userInfos: List<UserInfo>
 ) {
     companion object {
-        fun create(name: String, userInfos: List<UserInfo>): Room {
-            return Room(id = UUID.randomUUID(), name = name, userInfos = userInfos)
+        fun create(id: UUID = UUID.randomUUID(), name: String, userInfos: List<UserInfo>): Room {
+            return Room(id = id, name = name, userInfos = userInfos)
         }
 
         fun update(id: UUID, name: String, userInfos: List<UserInfo>): Room {
-            return Room(id = UUID.randomUUID(), name = name, userInfos = userInfos)
+            return Room(id = id, name = name, userInfos = userInfos)
         }
     }
 }

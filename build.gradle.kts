@@ -23,7 +23,6 @@ dependencyManagement {
         dependencySet("io.kotest:5.7.2") {
             entry("kotest-runner-junit5")
             entry("kotest-assertions-core")
-            entry("kotest-extensions-spring")
         }
     }
 }
@@ -40,7 +39,7 @@ dependencies {
     // for test
     testImplementation("io.kotest:kotest-runner-junit5")
     testImplementation("io.kotest:kotest-assertions-core")
-    testImplementation("io.kotest:kotest-extensions-spring")
+    testImplementation("io.kotest:kotest-extensions-spring:4.4.3")
     testImplementation("io.mockk:mockk:1.12.0")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
 }

@@ -1,6 +1,6 @@
 package dev.yangsijun.stomptutorial.chat.repository
 
-import dev.yangsijun.stomptutorial.chat.domain.Chat
+import dev.yangsijun.stomptutorial.chat.domain.BaseChat
 import org.bson.types.ObjectId
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -16,7 +16,7 @@ class CustomChatRepositoryImpl(
     private val mongoTemplate: MongoTemplate
 ) : CustomChatRepository {
 
-    override fun findChatsClosestToId(chatId: ObjectId, roomId: UUID, direction: Int, limit: Int): List<Chat> {
+    override fun findChatsClosestToId(chatId: ObjectId, roomId: UUID, direction: Int, limit: Int): List<BaseChat> {
         val query = Query().with(Pageable.ofSize(limit)).with(Sort.by(Sort.Direction.ASC))
 
         // roomId가 같은 경우만 추가
@@ -33,16 +33,16 @@ class CustomChatRepositoryImpl(
             }
 
         query.addCriteria(criteria)
-        return mongoTemplate.find(query, Chat::class.java)
+        return mongoTemplate.find(query, BaseChat::class.java)
     }
 
-    override fun findChatsRecent(roomId: UUID, limit: Int): List<Chat> {
+    override fun findChatsRecent(roomId: UUID, limit: Int): List<BaseChat> {
         val query = Query().with(Pageable.ofSize(limit)).with(Sort.by(Sort.Direction.ASC))
 
         // roomId가 같은 경우만 추가
         val criteria = Criteria.where("roomId").`is`(roomId)
 
         query.addCriteria(criteria)
-        return mongoTemplate.find(query, Chat::class.java)
+        return mongoTemplate.find(query, BaseChat::class.java)
     }
 }
