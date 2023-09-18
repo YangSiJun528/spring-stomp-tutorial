@@ -35,6 +35,8 @@ class CreateRoomService(
 
         roomRepository.save(newRoom)
         chatRepository.save(systemChat)
+
+        // TODO Send Refresh Event
     }
 
     fun toUserInfos(dto: CreateRoomReq, systemChatId: ObjectId): List<UserInfo> {

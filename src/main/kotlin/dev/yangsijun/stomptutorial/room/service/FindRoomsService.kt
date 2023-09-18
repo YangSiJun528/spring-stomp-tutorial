@@ -7,10 +7,12 @@ import dev.yangsijun.stomptutorial.room.dto.common.RoomInfo
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
 import org.springframework.data.domain.Sort
+import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.*
 
 // 특정 방 id를 기준으로 or 최근 데이터를 기준으로 위 or 아래 n개 가져오기
+@Service
 class FindRoomsService(
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository

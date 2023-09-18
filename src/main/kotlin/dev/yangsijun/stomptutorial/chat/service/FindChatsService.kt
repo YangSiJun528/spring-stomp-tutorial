@@ -1,21 +1,23 @@
 package dev.yangsijun.stomptutorial.chat.service
 
 import dev.yangsijun.stomptutorial.chat.domain.BaseChat
-import dev.yangsijun.stomptutorial.chat.message.res.ChatMessage
+import dev.yangsijun.stomptutorial.chat.message.res.OutChatMessage
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
 import org.springframework.data.domain.Sort
+import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.*
 
 // 채팅 목록 돌려줌
+@Service
 class FindChatsService(
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository
 ) {
 
-    fun execute(chatId: ObjectId, roomId: UUID, searchPrevious: Boolean, size: Int): List<ChatMessage> {
+    fun execute(chatId: ObjectId, roomId: UUID, searchPrevious: Boolean, size: Int): List<OutChatMessage> {
         validateRoomExists(roomId)
         validateChatExists(chatId)
 
@@ -29,7 +31,7 @@ class FindChatsService(
         return chats.map { chatToChatMessage(it) }
     }
 
-    fun execute(roomId: UUID, size: Int): List<ChatMessage> {
+    fun execute(roomId: UUID, size: Int): List<OutChatMessage> {
         validateRoomExists(roomId)
 
         val chats: List<BaseChat> = chatRepository.findChatsRecent(
@@ -52,8 +54,8 @@ class FindChatsService(
 
     private fun booleanToDirection(b: Boolean): Sort.Direction = if (b) Sort.Direction.ASC else Sort.Direction.DESC
 
-    private fun chatToChatMessage(chat: BaseChat): ChatMessage {
-        return ChatMessage(
+    private fun chatToChatMessage(chat: BaseChat): OutChatMessage {
+        return OutChatMessage(
             chatId = chat.id,
             roomId = chat.roomId,
             type = chat.type,

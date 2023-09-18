@@ -1,12 +1,10 @@
-package dev.yangsijun.stomptutorial.chat.message.res
+package dev.yangsijun.stomptutorial.chat.message.req
 
 import dev.yangsijun.stomptutorial.chat.domain.ChatType
 import org.bson.types.ObjectId
 import java.util.*
 
-data class ChatMessage(
-    val chatId: ObjectId,
+data class InChatMessage(
     val roomId: UUID,
-    val type: ChatType,
     val textContent: String
 )
