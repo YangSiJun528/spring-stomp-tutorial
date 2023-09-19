@@ -17,20 +17,16 @@ class CustomChatRepositoryImpl(
 ) : CustomChatRepository {
 
     override fun findChatsClosestToId(chatId: ObjectId, roomId: UUID, direction: Sort.Direction, limit: Int): List<BaseChat> {
-        val query = Query().with(Pageable.ofSize(limit)).with(Sort.by(direction, "id"))
+        val query = Query()
+            .with(Pageable.ofSize(limit))
+            .with(Sort.by(direction, "id"))
 
-        // roomId가 같은 경우만 추가
-        val criteria = Criteria.where("id")
-            .let {
-                it.andOperator(
-                    Criteria.where("roomId").`is`(roomId),
-                    when (direction) {
-                        Sort.Direction.ASC -> it.gte(chatId)
-                        Sort.Direction.DESC -> it.lte(chatId)
-                        else -> throw IllegalArgumentException("direction is ASC or DESC, input data : $direction")
-                    }
-                )
-            }
+        val criteria = Criteria.where("roomId").`is`(roomId)
+        when (direction) {
+            Sort.Direction.ASC -> criteria.and("id").gte(chatId)
+            Sort.Direction.DESC -> criteria.and("id").lte(chatId)
+            else -> throw IllegalArgumentException("direction must be ASC or DESC, input data: $direction")
+        }
 
         query.addCriteria(criteria)
         return mongoTemplate.find(query, BaseChat::class.java)
