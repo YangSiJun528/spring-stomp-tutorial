@@ -4,6 +4,7 @@ import dev.yangsijun.stomptutorial.chat.domain.BaseChat
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
 import dev.yangsijun.stomptutorial.room.domain.Room
 import dev.yangsijun.stomptutorial.room.dto.common.RoomInfo
+import dev.yangsijun.stomptutorial.room.dto.common.RoomInfoDto
 import dev.yangsijun.stomptutorial.room.message.res.RoomInfoMessage
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
@@ -19,24 +20,24 @@ class FindRoomsService(
     private val roomRepository: RoomRepository
 ) {
 
-    fun execute(userId: UUID, chatId: ObjectId, direction: Sort.Direction, limit: Int): List<Map<UUID, RoomInfoMessage>> {
+    fun execute(userId: UUID, chatId: ObjectId, direction: Sort.Direction, limit: Int): List<RoomInfoDto> {
         validateChatExists(chatId)
 
         val rooms: List<Room> = roomRepository.findRoomsClosestToChatId(userId, chatId, direction, limit)
         val roomInfos = rooms.map {
             val recentChat: List<BaseChat> = chatRepository.findAllByRoomIdOrderByIdDesc(it.id)
             RoomInfoManager.execute(userId, it, recentChat.first(), recentChat)
-        }.toList()
+        }
 
         return roomInfos
     }
 
-    fun execute(userId: UUID, size: Int): List<Map<UUID, RoomInfoMessage>> {
+    fun execute(userId: UUID, size: Int): List<RoomInfoDto> {
         val rooms: List<Room> = roomRepository.findRoomsRecent(userId, size)
         val roomInfos = rooms.map {
             val recentChat: List<BaseChat> = chatRepository.findAllByRoomIdOrderByIdDesc(it.id)
             RoomInfoManager.execute(userId, it, recentChat.first(), recentChat)
-        }.toList()
+        }
 
         return roomInfos
     }
