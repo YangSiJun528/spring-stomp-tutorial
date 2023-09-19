@@ -32,7 +32,7 @@ class DemoCommandLineRunner(
 
         createRoomService.execute(CreateRoomReq(userId1, mutableListOf(userId1, userId2)), roomId1)
 
-        val rooms = findRoomsService.execute(10)
+        val rooms = findRoomsService.execute(userId2, 10)
         val room = rooms.get(0)
 
         val chats1 = findChatsService.execute(roomId1, 10)
@@ -45,5 +45,8 @@ class DemoCommandLineRunner(
 
         val chats2 = findChatsService.execute(roomId2, 10)
         val chat2 = chats2.get(1)
+
+        val rooms2 = findRoomsService.execute(userId3, 10)
+        val room2 = rooms.get(0)
     }
 }

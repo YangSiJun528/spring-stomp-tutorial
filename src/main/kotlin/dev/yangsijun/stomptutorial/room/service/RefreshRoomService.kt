@@ -19,34 +19,8 @@ class RefreshRoomService(
     fun execute(room: Room, newChat: BaseChat): Map<UUID, RoomInfoMessage> {
         val chats: List<BaseChat> = chatRepository.findAllByRoomIdOrderByIdDesc(roomId = room.id)
 
-        val rs: Map<UUID, RoomInfoMessage> = room.userInfos.associateBy(
-            { it.userId },
-            { toRoomInfoMessage(chats, it, room, newChat) }
-        )
+        val roomInfos = RoomInfoManager.execute(room, newChat, chats)
 
-        return rs
-    }
-
-    private fun toRoomInfoMessage(
-        chats: List<BaseChat>, userInfo: UserInfo, room: Room, newChat: BaseChat
-    ): RoomInfoMessage {
-        return RoomInfoMessage(
-            roomId = room.id,
-            roomName = room.name,
-            recentChat = newChat,
-            lastViewedChatId = userInfo.lastViewedChatId.toString(),
-            noCheckedCount = findNoCheckChatCount(chats, userInfo.lastViewedChatId)
-        )
-    }
-
-    private fun findNoCheckChatCount(chats: List<BaseChat>, lastViewedChatId: ObjectId): Int {
-        var unseenChatCount = 0
-        for (chat in chats) {
-            if (chat.id == lastViewedChatId) {
-                break
-            }
-            unseenChatCount++
-        }
-        return unseenChatCount
+        return roomInfos
     }
 }

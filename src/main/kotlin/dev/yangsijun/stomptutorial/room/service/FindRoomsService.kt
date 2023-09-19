@@ -4,6 +4,7 @@ import dev.yangsijun.stomptutorial.chat.domain.BaseChat
 import dev.yangsijun.stomptutorial.chat.repository.ChatRepository
 import dev.yangsijun.stomptutorial.room.domain.Room
 import dev.yangsijun.stomptutorial.room.dto.common.RoomInfo
+import dev.yangsijun.stomptutorial.room.message.res.RoomInfoMessage
 import dev.yangsijun.stomptutorial.room.repository.RoomRepository
 import org.bson.types.ObjectId
 import org.springframework.data.domain.Sort
@@ -11,30 +12,32 @@ import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.*
 
-// 특정 방 id를 기준으로 or 최근 데이터를 기준으로 위 or 아래 n개 가져오기
+// 특정 방 id를 기준 or 최신 순 기준 방 목록를 위 or 아래 n개 가져오기
 @Service
 class FindRoomsService(
     private val chatRepository: ChatRepository,
     private val roomRepository: RoomRepository
 ) {
 
-    fun execute(chatId: ObjectId, direction: Sort.Direction, limit: Int): List<RoomInfo> {
+    fun execute(userId: UUID, chatId: ObjectId, direction: Sort.Direction, limit: Int): List<Map<UUID, RoomInfoMessage>> {
         validateChatExists(chatId)
 
-        val rooms: List<Room> = roomRepository.findRoomsClosestToChatId(chatId, direction, limit)
-        val roomInfos: List<RoomInfo> = rooms.map {
-            val recentChat: BaseChat = chatRepository.findFirstByRoomIdOrderByIdDesc(it.id)
-            RoomInfo(it.id, recentChat, it.userInfos)
+        val rooms: List<Room> = roomRepository.findRoomsClosestToChatId(userId, chatId, direction, limit)
+        val roomInfos = rooms.map {
+            val recentChat: List<BaseChat> = chatRepository.findAllByRoomIdOrderByIdDesc(it.id)
+            RoomInfoManager.execute(userId, it, recentChat.first(), recentChat)
         }.toList()
+
         return roomInfos
     }
 
-    fun execute(size: Int): List<RoomInfo> {
-        val rooms: List<Room> = roomRepository.findRoomsRecent(size)
-        val roomInfos: List<RoomInfo> = rooms.map {
-            val recentChat: BaseChat = chatRepository.findFirstByRoomIdOrderByIdDesc(it.id)
-            RoomInfo(it.id, recentChat, it.userInfos)
+    fun execute(userId: UUID, size: Int): List<Map<UUID, RoomInfoMessage>> {
+        val rooms: List<Room> = roomRepository.findRoomsRecent(userId, size)
+        val roomInfos = rooms.map {
+            val recentChat: List<BaseChat> = chatRepository.findAllByRoomIdOrderByIdDesc(it.id)
+            RoomInfoManager.execute(userId, it, recentChat.first(), recentChat)
         }.toList()
+
         return roomInfos
     }
 
