@@ -3,10 +3,12 @@ package dev.yangsijun.stomptutorial.test
 import dev.yangsijun.stomptutorial.chat.message.req.InChatMessage
 import dev.yangsijun.stomptutorial.chat.service.FindChatsService
 import dev.yangsijun.stomptutorial.chat.service.ReceiveChatService
+import dev.yangsijun.stomptutorial.chat.service.ViewChatService
 import dev.yangsijun.stomptutorial.room.dto.req.CreateRoomReq
 import dev.yangsijun.stomptutorial.room.service.CreateRoomService
 import dev.yangsijun.stomptutorial.room.service.FindRoomsService
 import dev.yangsijun.stomptutorial.room.service.RefreshRoomService
+import org.bson.types.ObjectId
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import java.util.*
@@ -17,7 +19,8 @@ class DemoCommandLineRunner(
     private val receiveChatService: ReceiveChatService,
     private val createRoomService: CreateRoomService,
     private val findRoomsService: FindRoomsService,
-    private val refreshRoomService: RefreshRoomService
+    private val refreshRoomService: RefreshRoomService,
+    private val viewChatService: ViewChatService
 ): CommandLineRunner {
     override fun run(vararg args: String?) {
         val userId1 = UUID.fromString("550e8400-e29b-41d4-a716-446655440000")
@@ -48,5 +51,13 @@ class DemoCommandLineRunner(
 
         val rooms2 = findRoomsService.execute(userId3, 10)
         val room2 = rooms.get(0)
+
+        val rooms3 = findRoomsService.execute(userId1, 10)
+        val room3 = rooms.get(0)
+
+        viewChatService.execute(roomId2, userId1)
+
+        val rooms4 = findRoomsService.execute(userId1, 10)
+        val room4 = rooms.get(0)
     }
 }
