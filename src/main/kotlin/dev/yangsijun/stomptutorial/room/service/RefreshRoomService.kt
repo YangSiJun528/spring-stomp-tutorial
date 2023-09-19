@@ -16,8 +16,6 @@ class RefreshRoomService(
 ) {
 
     fun execute(room: Room, newChat: BaseChat): List<RoomInfoMessage> {
-
-        // sender 호출
         val chats: List<BaseChat> = chatRepository.findAllByRoomIdOrderByIdDesc(roomId = room.id)
 
         val rs: List<RoomInfoMessage> = room.userInfos.map { toRoomInfoMessage(chats, it, room, newChat) }

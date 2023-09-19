@@ -42,6 +42,23 @@ class CreateRoomService(
         eventPublisher.publishEvent(SavedNewChatEvent(newRoom, systemChat))
     }
 
+    // 테스트용 임시
+    @Transactional(rollbackFor = [Exception::class])
+    fun execute(dto: CreateRoomReq, id: UUID) {
+        val systemChatId: ObjectId = ObjectId.get()
+
+        val systemChat = SystemChat(id = systemChatId, roomId = id, "AAA님과의 채팅이 시작되었습니다.")
+
+        val newRoom: Room = Room.create(
+            id = id, name = "AAA님과의 채팅", userInfos = toUserInfos(dto, systemChat.id)
+        )
+
+        roomRepository.save(newRoom)
+        chatRepository.save(systemChat)
+
+        eventPublisher.publishEvent(SavedNewChatEvent(newRoom, systemChat))
+    }
+
     fun toUserInfos(dto: CreateRoomReq, systemChatId: ObjectId): List<UserInfo> {
         val userIds = mutableSetOf(dto.creatorId)
         userIds.addAll(dto.memberIds)

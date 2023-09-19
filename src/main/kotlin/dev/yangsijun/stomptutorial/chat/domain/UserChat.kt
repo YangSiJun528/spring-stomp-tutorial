@@ -13,9 +13,9 @@ import java.util.UUID
 @TypeAlias("userChat")
 @CompoundIndex(def = "{'roomId': 1, 'id': -1}")
 class UserChat (
-    @Id
-    override val id: ObjectId,
-    override val roomId: UUID,
+    id: ObjectId,
+    roomId: UUID,
     val userId: UUID,
-    override val textContent: String
-): BaseChat(id, roomId, ChatType.USER, textContent)
+    textContent: String,
+    type: ChatType = ChatType.USER
+): BaseChat(id, roomId, type, textContent)

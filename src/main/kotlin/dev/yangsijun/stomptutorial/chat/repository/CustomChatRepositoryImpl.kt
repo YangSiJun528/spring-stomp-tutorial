@@ -37,7 +37,9 @@ class CustomChatRepositoryImpl(
     }
 
     override fun findChatsRecent(roomId: UUID, limit: Int): List<BaseChat> {
-        val query = Query().with(Pageable.ofSize(limit)).with(Sort.by(Sort.Direction.ASC))
+        val query = Query()
+            .with(Pageable.ofSize(limit))
+            .with(Sort.by(Sort.Direction.ASC, "id"))
 
         // roomId가 같은 경우만 추가
         val criteria = Criteria.where("roomId").`is`(roomId)
