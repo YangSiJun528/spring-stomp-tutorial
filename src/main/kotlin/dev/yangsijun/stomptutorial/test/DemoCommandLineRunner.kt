@@ -1,5 +1,6 @@
 package dev.yangsijun.stomptutorial.test
 
+import dev.yangsijun.stomptutorial.chat.message.req.InChatMessage
 import dev.yangsijun.stomptutorial.chat.service.FindChatsService
 import dev.yangsijun.stomptutorial.chat.service.ReceiveChatService
 import dev.yangsijun.stomptutorial.room.dto.req.CreateRoomReq
@@ -26,14 +27,23 @@ class DemoCommandLineRunner(
         val userId5 = UUID.fromString("550e8400-e29b-41d4-a716-446655440001")
         val userId6 = UUID.fromString("123e4567-e89b-12d3-a456-426614174001")
 
-
         val roomId1 = UUID.fromString("360471aa-fb1c-4506-8485-88291ae1e3ed")
+        val roomId2 = UUID.fromString("360471aa-fb1c-4506-8485-446655440001")
+
         createRoomService.execute(CreateRoomReq(userId1, mutableListOf(userId1, userId2)), roomId1)
 
         val rooms = findRoomsService.execute(10)
         val room = rooms.get(0)
 
-        val chats = findChatsService.execute(roomId1, 10)
-        val chat = chats.get(0)
+        val chats1 = findChatsService.execute(roomId1, 10)
+        val chat1 = chats1.get(0)
+
+        createRoomService.execute(CreateRoomReq(userId1, mutableListOf(userId1, userId3)), roomId2)
+
+        receiveChatService.execute(userId1, InChatMessage(roomId2, "userId1이 보내는 메시지"))
+        receiveChatService.execute(userId3, InChatMessage(roomId2, "userId3이 보내는 메시지"))
+
+        val chats2 = findChatsService.execute(roomId2, 10)
+        val chat2 = chats2.get(1)
     }
 }
