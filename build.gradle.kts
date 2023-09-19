@@ -51,6 +51,10 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+allOpen {
+    annotations("org.springframework.data.mongodb.core.mapping.Document")
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
